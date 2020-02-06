@@ -1,0 +1,5 @@
+node_modules
+prisma.yml
+generated
+datamodel.prisma
+.env
