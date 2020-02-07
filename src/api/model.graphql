@@ -10,9 +10,9 @@ type User {
 	companyRole: String
 	geoLocation: String
 	tags: [Tag!]
-	profileImg: String
+	profileImgLocation: String
+	cardImgLocation: String
 	bio: String
-	cardImg: String
 	likes: [User!]
 	liked: [User!]
 	unlikes: [User!]
