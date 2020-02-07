@@ -25,9 +25,10 @@ export const sendSecretMail = (adress, secret) => {
 		from: 'tlrhks@naver.com',
 		to: adress,
 		subject: 'Login Secret for Prismagram',
-		html: `Hello! your login secret is<string> ${secret}</strong>.<br/>Copy paste on the app/website to log in`
+		html: `Hello! your login secret is<strong> ${secret}</strong>.<br/>Copy paste on the app/website to log in`
 	};
 	return sendMail(email);
 };
 
 export const generateToken = id => jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: 3600000000 });
+export const signOutToken = id => jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: 0 });

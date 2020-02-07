@@ -1,0 +1,6 @@
+type Mutation {
+	confirmText(phone: String!): String!
+}
+type Query {
+	something: String
+}
