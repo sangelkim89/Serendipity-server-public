@@ -5,7 +5,7 @@ export default {
 			const { phone } = args;
 			let newPhone = phone;
 			newPhone = newPhone.slice(1);
-			newPhone = '01182' + newPhone;
+			newPhone = '+01182' + newPhone;
 			console.log(newPhone);
 			const accountSID = process.env.TWILIO_ACCOUNT_SID;
 			const authToken = process.env.TWILIO_AUTH_TOKEN;

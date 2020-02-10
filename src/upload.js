@@ -28,8 +28,10 @@ export const uploadMiddleware = upload.fields([{ name: 'profileImg' }, { name: '
 
 export const uploadController = async (req, res) => {
 	const { cardImg, profileImg } = req.files;
+
 	const cardImgLocation = cardImg[0].location;
 	const profileImgLocation = profileImg[0].location;
+
 	const { name, phone, password, email, gender, birth, bio, companyName, companyRole, geoLocation, tags } = req.body;
 
 	try {
