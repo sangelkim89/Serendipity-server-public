@@ -1,0 +1,48 @@
+type User {
+id: ID! @id
+gender: String!
+email: String! @unique
+password: String!
+phone: String!
+name: String!
+birth: String!
+companyName: String
+companyRole: String
+geoLocation: String
+tags:[String!] @scalarList(strategy:RELATION)
+profileImgLocation: String
+cardImgLocation: String
+bio: String
+likes: [User!] @relation(name: "LikesOfUser")
+liked: [User!] @relation(name: "LikesOfUser")
+unlikes: [User!] @relation(name: "UnLikesOfUser")
+unliked: [User!] @relation(name: "UnLikesOfUser")
+distance: Int! @default(value:5)
+loginSecret: String
+rooms: [Room!]
+report:[Report!]
+}
+type Report {
+id: ID! @id
+participants: [User!]!
+messages: [Message!]!
+createdAt: DateTime! @createdAt
+}
+type Tag {
+id: ID! @id
+tag: String!
+user: [User] @relation(name: "TagOfUser")
+}
+type Room {
+id: ID! @id
+participants: [User!]!
+messages: [Message!]!
+createdAt: DateTime! @createdAt
+}
+type Message {
+id: ID! @id
+text: String!
+from: User! @relation(name: "From")
+to: User! @relation(name: "To")
+room: Room!
+}
