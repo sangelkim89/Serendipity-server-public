@@ -2,15 +2,13 @@ import { prisma } from "../../../generated/prisma-client";
 import { USER_FRAGMENT } from "../../fragments";
 
 export default {
-  Query: {
+  Mutation: {
     getHuntList: async (_, __, { request, isAuthenticated }) => {
       isAuthenticated(request);
       let { selfID } = request.user.id;
       let userGeoLocation = JSON.parse(request.user.geoLocation);
-      // let userTags = JSON.parse(tags);
       let selfTags = request.user.tags;
-      // console.log(selfTags);
-      // console.log(selfTags);
+
       //tag는 stringify된 ["tag1","tag2","tag3"] 으로 옵니다
 
       let getDistance3 = function(lat1, lon1, lat2, lon2) {

@@ -1,52 +1,52 @@
 type User {
-	id: ID!
-	gender: String!
-	email: String!
-	password: String!
-	phone: String!
-	name: String!
-	birth: String!
-	companyName: String
-	companyRole: String
-	geoLocation: String
-	tags: [Tag!]
-	profileImgLocation: String
-	cardImgLocation: String
-	bio: String
-	likes: [User!]
-	liked: [User!]
-	unlikes: [User!]
-	unliked: [User!]
-	distance: Int!
-	loginSecret: String
-	rooms: [Room!]
-	report: [Report!]
+  id: ID!
+  gender: String!
+  email: String!
+  password: String!
+  phone: String!
+  name: String!
+  birth: String!
+  companyName: String
+  companyRole: String
+  geoLocation: String
+  tags: [String!]
+  profileImgLocation: String
+  cardImgLocation: String
+  bio: String
+  likes: [User!]
+  liked: [User!]
+  unlikes: [User!]
+  unliked: [User!]
+  distance: Int!
+  loginSecret: String
+  rooms: [Room!]
+  report: [Report!]
 }
 
 type Report {
-	id: ID!
-	participants: [User!]!
-	messages: [Message!]!
-	createdAt: String
+  id: ID!
+  participants: [User!]!
+  messages: [Message!]!
+  createdAt: String
 }
 
 type Tag {
-	id: ID!
-	tag: String!
-	user: User
+  id: ID!
+  tag: String!
+  user: User
 }
 
 type Room {
-	id: ID!
-	participants: [User!]!
-	messages: [Message!]!
-	createdAt: String
+  id: ID!
+  participants: [User!]!
+  messages: [Message!]!
+  createdAt: String
 }
 
 type Message {
-	id: ID!
-	text: String!
-	from: User!
-	to: User!
-	room: Room!
+  id: ID!
+  text: String!
+  from: User!
+  to: User!
+  room: Room!
 }
