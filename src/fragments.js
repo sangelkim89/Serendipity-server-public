@@ -1,19 +1,22 @@
 export const USER_FRAGMENT = `
 
-fragment UserParts on User{
+
     id
-username
-avatar
+   name
+   email  
+  phone
+  birth
+  companyName
+  companyRole
+  geoLocation
+  tags
+  profileImgLocation
+  cardImgLocation
+  bio
+
   
-  likes{
-      post{
-          user{
-              id
-          }
-      }
-  }
    
-}
+
 
 
 `;
@@ -65,7 +68,7 @@ fragment RoomParts on Room{
 id
 
 participants{
-    id
+   
     ${USER_FRAGMENT}
 }
 messages{

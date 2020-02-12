@@ -1,0 +1,6 @@
+type Query {
+  something: String
+}
+type Mutation {
+  likeUser(selectedId: String!): String!
+}

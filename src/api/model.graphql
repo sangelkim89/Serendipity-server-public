@@ -13,34 +13,25 @@ type User {
   profileImgLocation: String
   cardImgLocation: String
   bio: String
-  likes: [User!]
-  liked: [User!]
-  unlikes: [User!]
-  unliked: [User!]
+
+  myLikes: [User!]
+  likedBy: [User!]
+
+  myUnlikes: [User!]
+  unlikedBy: [User!]
+
   distance: Int!
-  loginSecret: String
+
   rooms: [Room!]
-  report: [Report!]
-}
 
-type Report {
-  id: ID!
-  participants: [User!]!
-  messages: [Message!]!
-  createdAt: String
-}
-
-type Tag {
-  id: ID!
-  tag: String!
-  user: User
+  reports: [Report!]
 }
 
 type Room {
   id: ID!
   participants: [User!]!
   messages: [Message!]!
-  createdAt: String
+  createdAt: String!
 }
 
 type Message {
@@ -49,4 +40,19 @@ type Message {
   from: User!
   to: User!
   room: Room!
+}
+
+type Report {
+  id: ID!
+  participants: [User!]!
+  messages: [ReportMessage!]!
+  createdAt: String!
+}
+
+type ReportMessage {
+  id: ID!
+  text: String!
+  from: User!
+  to: User!
+  report: Report!
 }
