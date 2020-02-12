@@ -6,7 +6,7 @@ export default {
 			let newPhone = phone;
 			newPhone = newPhone.slice(1);
 			newPhone = '+01182' + newPhone;
-			console.log(newPhone);
+
 			const accountSID = process.env.TWILIO_ACCOUNT_SID;
 			const authToken = process.env.TWILIO_AUTH_TOKEN;
 			const textSecretNumber = Math.floor(Math.random() * 99999) + 11111;
