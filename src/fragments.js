@@ -66,13 +66,30 @@ export const FULL_POST_FRAGMENT = `
 export const ROOM_FRAGMENT = `
 fragment RoomParts on Room{
 id
-
+createdAt
 participants{
    
     ${USER_FRAGMENT}
 }
 messages{
     ${MESSAGE_FRAGMENT}
+}
+}
+`;
+
+export const MESSAGES_FRAGMENT = `
+fragment MessageParts on Message{
+id
+text
+
+to{
+    ${USER_FRAGMENT}
+}
+from{
+    ${USER_FRAGMENT}
+}
+room{
+    id
 }
 }
 `;
