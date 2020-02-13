@@ -1,64 +1,86 @@
+import multer from "multer";
+import multerS3 from "multer-s3";
+import aws from "aws-sdk";
+import "../../env";
 import { prisma } from "../../../generated/prisma-client";
-import { USER_FRAGMENT } from "../../fragments";
-
-export default {
-  Mutation: {
-    getHuntList: async (_, __, { request, isAuthenticated }) => {
-      isAuthenticated(request);
-      let { selfID } = request.user.id;
-      let userGeoLocation = JSON.parse(request.user.geoLocation);
-      let selfTags = request.user.tags;
-
-      //tag는 stringify된 ["tag1","tag2","tag3"] 으로 옵니다
-
-      let getDistance3 = function(lat1, lon1, lat2, lon2) {
-        var R = 6371e3; // metres
-        var φ1 = Math.sin((lat1 * Math.PI) / 180);
-        var φ2 = Math.sin((lat2 * Math.PI) / 180);
-        var Δφ = Math.sin(((lat2 - lat1) * Math.PI) / 180);
-        var Δλ = Math.sin(((lon2 - lon1) * Math.PI) / 180);
-
-        var a =
-          Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-          Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        var d = R * c;
-        return d;
-      };
-
-      try {
-        const huntListByGeoLocation = await prisma
-          .users({ where: { id_not: request.user.id } })
-          .geoLocation();
-
-        // console.log(huntListByTag);
-        const filteredGeoLocations = huntListByGeoLocation.filter(user => {
-          let parsed = JSON.parse(user.geoLocation);
-          return (
-            getDistance3(
-              userGeoLocation[0],
-              userGeoLocation[1],
-              parsed[0],
-              parsed[1]
-            ) <= 5000
-          );
-        });
-        let result = await Promise.all(
-          filteredGeoLocations.map(async user => {
-            let filteredUser = await prisma.users({
-              where: { geoLocation: user.geoLocation }
-            });
-            let filtered = filteredUser.filter(user => {
-              return user.tags.some(r => selfTags.indexOf(r) >= 0);
-            });
-            return filtered;
-          })
-        );
-        return JSON.stringify(result.flat());
-      } catch (error) {
-        console.log(error);
-      }
+/////////////////// multer로 img 업로드 /////////////////
+const s3 = new aws.S3({
+  accessKeyId: process.env.AWS_KEY,
+  secretAccessKey: process.env.AWS_SECRET,
+  region: "ap-northeast-2"
+});
+const upload = multer({
+  storage: multerS3({
+    s3,
+    acl: "public-read",
+    bucket: "serendipity-uploads",
+    metadata: function(req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function(req, file, cb) {
+      cb(null, Date.now().toString());
     }
+  })
+});
+////formData로 받을때 file로 받고  img가 아닌 Data는 body로 넘어온다.//////
+////////////////////////upload.single는 한가지 req.file|||||||fields 는 여러개req.files
+export const uploadMiddleware = upload.fields([{ name: "profileImg" }, { name: "cardImg" }]);
+
+export const uploadController = async (req, res) => {
+  const { cardImg, profileImg } = req.files;
+
+  const cardImgLocation = cardImg[0].location;
+  const profileImgLocation = profileImg[0].location;
+
+  const {
+    name,
+    phone,
+    password,
+    email,
+    gender,
+    birth,
+    bio,
+    companyName,
+    companyRole,
+    geoLocation,
+    tags
+  } = req.body;
+  //name(닉네임)중복확인
+  try {
+    ////singUp요청////
+    await prisma.createUser({
+      name,
+      phone,
+      password,
+      email,
+      gender,
+      birth,
+      bio,
+      companyName,
+      companyRole,
+      geoLocation,
+      cardImgLocation,
+      profileImgLocation,
+      tags: { set: tags }
+    });
+    ///////tag &&  user 연결 및 생성//////
+    // const parseTags = JSON.parse(tags);
+    // for (let i = 0; i < parseTags.length; i++) {
+    //   await prisma.createTag({
+    //     user: {
+    //       connect: {
+    //         email: email
+    //       }
+    //     },
+    //     tag: parseTags[i]
+    //   });
+    // }
+
+    res.status(200).json({
+      cardImgLocation,
+      profileImgLocation
+    });
+  } catch (error) {
+    throw new Error("Can`t Create Account");
   }
 };

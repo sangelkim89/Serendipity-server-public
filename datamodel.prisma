@@ -25,8 +25,17 @@ report:[Report!]
 type Report {
 id: ID! @id
 participants: [User!]!
-messages: [Message!]!
+from: String!
+to: String!
+messages: [ReportMessage!]!
 createdAt: DateTime! @createdAt
+}
+type ReportMessage{
+id: ID! @id
+text: String!
+from: User! @relation(name: "ReportFrom")
+to: User! @relation(name: "ReportTo")
+report: Report!
 }
 type Tag {
 id: ID! @id

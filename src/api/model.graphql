@@ -26,8 +26,17 @@ type User {
 type Report {
   id: ID!
   participants: [User!]!
-  messages: [Message!]!
-  createdAt: String
+  from: String!
+  to: String!
+  messages: [ReportMessage!]!
+  createdAt: String!
+}
+type ReportMessage {
+  id: ID!
+  text: String!
+  from: User!
+  to: User!
+  report: Report!
 }
 
 type Tag {

@@ -1,22 +1,16 @@
 export const USER_FRAGMENT = `
-
 fragment UserParts on User{
     id
-username
-avatar
-  
-  likes{
-      post{
-          user{
-              id
-          }
-      }
-  }
-   
+    tags{
+        ${TAG_FRAGMENT}
+    }
 }
-
-
 `;
+
+export const TAG_FRAGMENT = `
+    tag
+`;
+
 export const COMMENT_FRAGMENT = `
    
     id
@@ -41,7 +35,6 @@ from{
 }
 
 `;
-
 export const FULL_POST_FRAGMENT = `
     fragment PostParts on Post{
         id
