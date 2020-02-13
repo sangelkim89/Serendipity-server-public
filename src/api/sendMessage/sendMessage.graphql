@@ -1,0 +1,6 @@
+type Mutation {
+  sendMessage(roomId: String, message: String!, toId: String): Message
+}
+type Query {
+  something: String
+}

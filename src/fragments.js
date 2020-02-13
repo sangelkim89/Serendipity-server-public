@@ -36,6 +36,7 @@ to{
 from{
     ${USER_FRAGMENT}
 }
+
 `;
 
 export const FULL_POST_FRAGMENT = `
@@ -66,5 +67,27 @@ participants{
 messages{
     ${MESSAGE_FRAGMENT}
 }
+}
+`;
+
+export const MESSAGES_FRAGMENT = `
+fragment MessagesParts on Message{
+    id
+    text
+    to{
+        ${USER_FRAGMENT}
+    }
+    from{
+        ${USER_FRAGMENT}
+    }
+    room {
+        id
+        participants {
+            ${USER_FRAGMENT}
+        }
+        messages{
+            ${MESSAGE_FRAGMENT}
+        }
+    }
 }
 `;

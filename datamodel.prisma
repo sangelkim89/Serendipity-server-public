@@ -13,15 +13,11 @@ tags: [String!] @scalarList(strategy:RELATION)
 profileImgLocation: String
 cardImgLocation: String
 bio: String
-
 myLikes: [User!] @relation(name: "LikesOfUser")
 likedBy: [User!] @relation(name: "LikesOfUser")
-
 myUnlikes: [User!] @relation(name: "UnLikesOfUser")
 unlikedBy: [User!] @relation(name: "UnLikesOfUser")
-
 distance: Int! @default(value:5)
-
 rooms: [Room!]
 reports:[Report!]
 }
@@ -33,24 +29,9 @@ reports:[Report!]
 type Room {
 id: ID! @id
 participants: [User!]!
-from: String!
-to: String!
-messages: [ReportMessage!]!
+messages: [Message!]!
 createdAt: DateTime! @createdAt
 }
-<<<<<<< HEAD
-type ReportMessage{
-id: ID! @id
-text: String!
-from: User! @relation(name: "ReportFrom")
-to: User! @relation(name: "ReportTo")
-report: Report!
-}
-type Tag {
-id: ID! @id
-tag: String!
-user: [User] @relation(name: "TagOfUser")
-=======
 
 type Message {
   id: ID! @id
@@ -58,7 +39,6 @@ type Message {
   from: User! @relation(name: "From")
   to: User! @relation(name: "To")
   room: Room!
->>>>>>> c9b3e2c585cb3a29da825addf3a22e4b68c693a9
 }
 
 
@@ -76,8 +56,5 @@ from: User! @relation(name: "ReportFrom")
 to: User! @relation(name: "ReportTo")
 report: Report!
 }
-
-
-
 
 

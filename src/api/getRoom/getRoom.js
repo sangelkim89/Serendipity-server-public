@@ -6,7 +6,7 @@ export default {
       isAuthenticated(request);
       const { roomId } = args;
 
-      const room = await prisma.room({ id: roomId }).$fragment(ROOM_FRAGMENT);
+      const room = await prisma.rooms({ id: roomId }).$fragment(ROOM_FRAGMENT);
 
       return room;
     }

@@ -28,7 +28,7 @@ export const uploadMiddleware = upload.fields([{ name: "profileImg" }, { name: "
 
 export const uploadController = async (req, res) => {
   const { cardImg, profileImg } = req.files;
-
+  console.log(req);
   const cardImgLocation = cardImg[0].location;
   const profileImgLocation = profileImg[0].location;
 
@@ -46,7 +46,13 @@ export const uploadController = async (req, res) => {
     tags
   } = req.body;
   //name(닉네임)중복확인
+  console.log("geoLocation: ", geoLocation);
+  console.log("typeof geoLocation: ", typeof geoLocation);
+  console.log("geoLocation[0]: ", geoLocation[0]);
+  const parsedgeoLocation = JSON.parse(geoLocation);
+  console.log("parsedgeoLocation[0]: ", parsedgeoLocation[0]);
   try {
+    const parsedTags = JSON.parse(tags);
     ////singUp요청////
     await prisma.createUser({
       name,
@@ -61,20 +67,8 @@ export const uploadController = async (req, res) => {
       geoLocation,
       cardImgLocation,
       profileImgLocation,
-      tags: { set: tags }
+      tags: { set: parsedTags }
     });
-    ///////tag &&  user 연결 및 생성//////
-    // const parseTags = JSON.parse(tags);
-    // for (let i = 0; i < parseTags.length; i++) {
-    //   await prisma.createTag({
-    //     user: {
-    //       connect: {
-    //         email: email
-    //       }
-    //     },
-    //     tag: parseTags[i]
-    //   });
-    // }
 
     res.status(200).json({
       cardImgLocation,
