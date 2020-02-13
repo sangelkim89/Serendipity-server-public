@@ -1,16 +1,19 @@
 export const USER_FRAGMENT = `
-fragment UserParts on User{
     id
-    tags{
-        ${TAG_FRAGMENT}
-    }
-}
+   name
+   email  
+  phone
+  birth
+  companyName
+  companyRole
+  geoLocation
+  tags
+  profileImgLocation
+  cardImgLocation
+  bio
+  
+   
 `;
-
-export const TAG_FRAGMENT = `
-    tag
-`;
-
 export const COMMENT_FRAGMENT = `
    
     id
@@ -33,8 +36,8 @@ to{
 from{
     ${USER_FRAGMENT}
 }
-
 `;
+
 export const FULL_POST_FRAGMENT = `
     fragment PostParts on Post{
         id
@@ -56,9 +59,8 @@ export const FULL_POST_FRAGMENT = `
 export const ROOM_FRAGMENT = `
 fragment RoomParts on Room{
 id
-
 participants{
-    id
+   
     ${USER_FRAGMENT}
 }
 messages{

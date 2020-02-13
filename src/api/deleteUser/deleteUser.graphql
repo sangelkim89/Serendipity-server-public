@@ -1,7 +1,6 @@
 type Mutation {
   deleteUser(id: String!): Boolean!
 }
-
 type Query {
   something: String
 }

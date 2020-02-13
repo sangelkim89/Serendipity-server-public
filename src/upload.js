@@ -28,8 +28,10 @@ export const uploadMiddleware = upload.fields([{ name: "profileImg" }, { name: "
 
 export const uploadController = async (req, res) => {
   const { cardImg, profileImg } = req.files;
+
   const cardImgLocation = cardImg[0].location;
   const profileImgLocation = profileImg[0].location;
+
   const {
     name,
     phone,
@@ -43,7 +45,7 @@ export const uploadController = async (req, res) => {
     geoLocation,
     tags
   } = req.body;
-
+  //name(닉네임)중복확인
   try {
     ////singUp요청////
     await prisma.createUser({
@@ -63,24 +65,22 @@ export const uploadController = async (req, res) => {
     });
     ///////tag &&  user 연결 및 생성//////
     // const parseTags = JSON.parse(tags);
-    console.log(tags);
     // for (let i = 0; i < parseTags.length; i++) {
-    //   await prisma.updateUser({
-    //     data: {
-    //       tags: { set: parseTags[i] }
+    //   await prisma.createTag({
+    //     user: {
+    //       connect: {
+    //         email: email
+    //       }
     //     },
-    //     where: {
-    //       email: email
-    //     }
+    //     tag: parseTags[i]
     //   });
     // }
 
-    res.json({
+    res.status(200).json({
       cardImgLocation,
       profileImgLocation
     });
-    return;
   } catch (error) {
-    console.log(error);
+    throw new Error("Can`t Create Account");
   }
 };
