@@ -24,51 +24,49 @@ const upload = multer({
 });
 ////formData로 받을때 file로 받고  img가 아닌 Data는 body로 넘어온다.//////
 ////////////////////////upload.single는 한가지 req.file|||||||fields 는 여러개req.files
-export const uploadMiddleware = upload.fields([{ name: "profileImg" }, { name: "cardImg" }]);
+export const editUserMiddleware = upload.fields([{ name: "profileImg" }, { name: "cardImg" }]);
 
-export const uploadController = async (req, res) => {
+export const editUserController = async (req, res) => {
   const { cardImg, profileImg } = req.files;
-  console.log(req);
+
   const cardImgLocation = cardImg[0].location;
   const profileImgLocation = profileImg[0].location;
 
   const {
-    name,
-    phone,
-    password,
-    email,
     gender,
+    email,
+    password,
+    phone,
+    name,
     birth,
-    bio,
     companyName,
     companyRole,
     geoLocation,
-    tags
+    tags,
+    bio
   } = req.body;
-  //name(닉네임)중복확인
-  console.log("geoLocation: ", geoLocation);
-  console.log("typeof geoLocation: ", typeof geoLocation);
-  console.log("geoLocation[0]: ", geoLocation[0]);
-  const parsedgeoLocation = JSON.parse(geoLocation);
-  console.log("parsedgeoLocation[0]: ", parsedgeoLocation[0]);
+
   try {
-    const parsedTags = JSON.parse(tags);
-    ////singUp요청////
     const parseTags = JSON.parse(tags);
-    await prisma.createUser({
-      name,
-      phone,
-      password,
-      email,
-      gender,
-      birth,
-      bio,
-      companyName,
-      companyRole,
-      geoLocation,
-      cardImgLocation,
-      profileImgLocation,
-      tags: { set: parseTags }
+    await prisma.updateUser({
+      data: {
+        gender,
+        email,
+        password,
+        phone,
+        name,
+        birth,
+        companyName,
+        companyRole,
+        geoLocation,
+        tags: { set: parseTags },
+        profileImgLocation,
+        cardImgLocation,
+        bio
+      },
+      where: {
+        email
+      }
     });
 
     res.status(200).json({
@@ -76,6 +74,6 @@ export const uploadController = async (req, res) => {
       profileImgLocation
     });
   } catch (error) {
-    throw new Error("Can`t Create Account");
+    throw new Error("Can`t Edit User");
   }
 };

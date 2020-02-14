@@ -4,17 +4,20 @@ export default {
   Query: {
     getMessage: async (_, args, { request, isAuthenticated }) => {
       isAuthenticated(request);
-      const { roomId } = args;
+      const { id } = args;
       try {
         const message = await prisma
           .messages({
             where: {
               room: {
-                id: roomId
+                participants_some: {
+                  id
+                }
               }
             }
           })
           .$fragment(MESSAGES_FRAGMENT);
+
         return message;
       } catch (error) {
         console.log(error);

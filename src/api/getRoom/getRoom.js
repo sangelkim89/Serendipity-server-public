@@ -4,11 +4,22 @@ export default {
   Query: {
     getRoom: async (_, args, { request, isAuthenticated }) => {
       isAuthenticated(request);
-      const { roomId } = args;
+      const { id } = args;
+      try {
+        const room = await prisma
+          .rooms({
+            where: {
+              participants_some: {
+                id
+              }
+            }
+          })
+          .$fragment(ROOM_FRAGMENT);
 
-      const room = await prisma.rooms({ id: roomId }).$fragment(ROOM_FRAGMENT);
-
-      return room;
+        return room;
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 };

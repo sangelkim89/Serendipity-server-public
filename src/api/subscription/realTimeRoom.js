@@ -1,15 +1,20 @@
+import { prisma } from "../../../generated/prisma-client";
+
 export default {
   Subscription: {
-    newMessage: {
+    newRoom: {
       subscribe: (_, args) => {
-        const { roomId } = args;
+        const { id } = args;
+
         return prisma.$subscribe
-          .message({
+          .room({
             AND: [
               { mutation_in: "CREATED" },
               {
                 node: {
-                  room: { id: roomId }
+                  participants_some: {
+                    id
+                  }
                 }
               }
             ]
