@@ -11,7 +11,6 @@ type User {
   geoLocation: String
   tags: [String!]
   profileImgLocation: String
-  cardImgLocation: String
   bio: String
 
   myLikes: [User!]
@@ -24,14 +23,15 @@ type User {
 
   rooms: [Room!]
 
-  reports: [Report!]
+  myReport: [ReportMessage!]
+  ReportBy: [ReportMessage!]
 }
 
 type Room {
   id: ID!
   participants: [User!]!
   messages: [Message!]
-  createdAt: String!
+  createdAt: String
 }
 
 type Message {
@@ -40,21 +40,14 @@ type Message {
   from: User!
   to: User!
   room: Room!
-  createdAt: String!
-}
-
-type Report {
-  id: ID!
-  participants: [User!]!
-  messages: [ReportMessage!]!
-  createdAt: String!
+  createdAt: String
 }
 
 type ReportMessage {
   id: ID!
   text: String!
+  optionText: String!
   from: User!
   to: User!
-  report: Report!
-  createdAt: String!
+  createdAt: String
 }

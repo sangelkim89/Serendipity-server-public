@@ -1,9 +1,11 @@
 type Mutation {
   editUser(
-    birth: String
-    companyName: String
+    geoLocation: String
+    tags: [String!]
+    distance: Int!
+    companyName: String!
     companyRole: String
-    bio: String
-    password: String
+    bio: String!
+    password: String!
   ): Boolean
 }
