@@ -6,8 +6,9 @@ export default {
       // console.log("인증 : ", request);
       isAuthenticated(request);
       const {
-        user: { tags: selfTags }
+        user: { tags: selfTags, distance }
       } = request;
+
       let userGeoLocation = request.user.geoLocation;
       userGeoLocation = JSON.parse(userGeoLocation);
 
@@ -46,7 +47,8 @@ export default {
           parsed = JSON.parse(parsed);
 
           return (
-            getDistance3(userGeoLocation.lat, userGeoLocation.lon, parsed.lat, parsed.lon) <= 5000
+            getDistance3(userGeoLocation.lat, userGeoLocation.lon, parsed.lat, parsed.lon) <=
+            Number(distance + "000")
           );
         });
         // console.log("distance", filteredGeoLocations);

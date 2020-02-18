@@ -24,30 +24,27 @@ const upload = multer({
 });
 ////formData로 받을때 file로 받고  img가 아닌 Data는 body로 넘어온다.//////
 ////////////////////////upload.single는 한가지 req.file|||||||fields 는 여러개req.files
-export const editUserMiddleware = upload.fields([{ name: "profileImg" }, { name: "cardImg" }]);
+export const editUserMiddleware = upload.fields([{ name: "profileImg" }]);
 
 export const editUserController = async (req, res) => {
-  const { cardImg, profileImg } = req.files;
+  const { profileImg } = req.files;
 
-  const cardImgLocation = cardImg[0].location;
   const profileImgLocation = profileImg[0].location;
 
-  const { password, name, birth, companyName, companyRole, geoLocation, tags, bio } = req.body;
+  const { password, companyName, companyRole, geoLocation, tags, bio, distance } = req.body;
 
   try {
     const parseTags = JSON.parse(tags);
     await prisma.updateUser({
       data: {
         password,
-        name,
-        birth,
         companyName,
         companyRole,
         geoLocation,
         tags: { set: parseTags },
         profileImgLocation,
-        cardImgLocation,
-        bio
+        bio,
+        distance
       },
       where: {
         email
@@ -55,7 +52,6 @@ export const editUserController = async (req, res) => {
     });
 
     res.status(200).json({
-      cardImgLocation,
       profileImgLocation
     });
   } catch (error) {

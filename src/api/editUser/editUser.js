@@ -1,18 +1,26 @@
 import { prisma } from "../../../generated/prisma-client";
-
+import crypto from "crypto";
 export default {
   Mutation: {
     editUser: async (_, args, { request, isAuthenticated }) => {
       isAuthenticated(request);
-      const { birth, companyName, companyRole, bio, password } = args;
+      const { companyName, companyRole, bio, password, geoLocation, tags, distance } = args;
+
+      // 해시 생성
+      const shasum = crypto.createHash("sha1");
+      shasum.update(password);
+      const output = shasum.digest("hex");
+      const parseTags = JSON.parse(tags);
       try {
         await prisma.updateUser({
           data: {
-            password,
-            birth,
+            password: output,
+            geoLocation,
             companyName,
             companyRole,
-            bio
+            bio,
+            distance,
+            tags: { set: parseTags }
           },
           where: {
             id: request.user.id
@@ -20,7 +28,8 @@ export default {
         });
         return true;
       } catch (error) {
-        throw new Error(`${error}`);
+        console.log(error);
+        return false;
       }
     }
   }
