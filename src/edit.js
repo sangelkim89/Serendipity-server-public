@@ -32,12 +32,16 @@ export const editUserController = async (req, res) => {
   const profileImgLocation = profileImg[0].location;
 
   const { password, companyName, companyRole, geoLocation, tags, bio, distance } = req.body;
-
+  //parsisng Tags
+  const parseTags = JSON.parse(tags);
+  // 해시로 password변환
+  const shasum = crypto.createHash("sha1");
+  shasum.update(password);
+  const output = shasum.digest("hex");
   try {
-    const parseTags = JSON.parse(tags);
     await prisma.updateUser({
       data: {
-        password,
+        password: output,
         companyName,
         companyRole,
         geoLocation,
