@@ -40,6 +40,7 @@ type Message {
   from: User!
   to: User!
   room: Room!
+  createdAt: String!
 }
 
 type Report {
@@ -55,4 +56,5 @@ type ReportMessage {
   from: User!
   to: User!
   report: Report!
+  createdAt: String!
 }
