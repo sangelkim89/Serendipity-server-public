@@ -1,6 +1,3 @@
 type Mutation {
-	logOut: String!
-}
-type Query {
-	something: String
+  logOut: String!
 }

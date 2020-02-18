@@ -15,6 +15,7 @@ const server = new GraphQLServer({
   schema,
   context: ({ request }) => ({ request, isAuthenticated })
 });
+//req.request 객체를 grapql server에서 사용할 수 있게 도와준다.
 
 server.express.use(morgan("dev"));
 server.express.use(authenticateJwt);

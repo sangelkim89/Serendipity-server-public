@@ -12,9 +12,9 @@ export default {
       const output = shasum.digest("hex");
       //저장된 유저 정보 가져오기
       const user = await prisma.user({ email });
-      // 비교하기
+      // 해슁 비교하기
       if (user.password === output) {
-        return generateToken(user.id);
+        return JSON.stringify({ token: generateToken(user.id), id: user.id });
       } else {
         throw new Error("Can`t sign in");
       }

@@ -15,7 +15,7 @@ export default {
           return "forbiddenEmail";
         }
       }
-      // 해당 email이 이미 존재하는지 확인하기
+      // 해당email이 이미 존재하는지 확인하기
       //통과 되면 loginSecret 발급
       if (exists) {
         return "Email already exists!";
