@@ -33,7 +33,7 @@ reports:[Report!]
 type Room {
 id: ID! @id
 participants: [User!]!
-messages: [Message!]!
+messages: [Message!]
 createdAt: DateTime! @createdAt
 }
 
@@ -43,6 +43,7 @@ type Message {
   from: User! @relation(name: "From")
   to: User! @relation(name: "To")
   room: Room!
+  createdAt: DateTime! @createdAt
 }
 
 
@@ -59,6 +60,7 @@ text: String!
 from: User! @relation(name: "ReportFrom")
 to: User! @relation(name: "ReportTo")
 report: Report!
+createdAt: DateTime! @createdAt
 }
 
 

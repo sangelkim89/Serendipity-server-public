@@ -1,9 +1,6 @@
 import { prisma } from "../../../generated/prisma-client";
 
 export default {
-  Query: {
-    something: () => "something"
-  },
   Mutation: {
     unlike: async (_, args, { request, isAuthenticated }) => {
       isAuthenticated(request);

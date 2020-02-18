@@ -1,5 +1,5 @@
 import { prisma } from "../../../generated/prisma-client";
-
+import { MESSAGES_FRAGMENT } from "../../fragments";
 export default {
   Subscription: {
     newMessage: {
@@ -16,7 +16,8 @@ export default {
               }
             ]
           })
-          .node();
+          .node()
+          .$fragment(MESSAGES_FRAGMENT);
       },
       resolve: payload => payload
     }
