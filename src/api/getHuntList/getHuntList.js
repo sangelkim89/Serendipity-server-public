@@ -1,15 +1,17 @@
 import { prisma } from "../../../generated/prisma-client";
-import { USER_FRAGMENT } from "../../fragments";
 
 export default {
   Mutation: {
     getHuntList: async (_, __, { request, isAuthenticated }) => {
+      console.log("request.user : ", request.user);
       isAuthenticated(request);
-      let { selfID } = request.user.id;
-      let userGeoLocation = JSON.parse(request.user.geoLocation);
-      let selfTags = request.user.tags;
-
-      //tag는 stringify된 ["tag1","tag2","tag3"] 으로 옵니다
+      const {
+        user: { tags: selfTags }
+      } = request;
+      let userGeoLocation = request.user.geoLocation;
+      userGeoLocation = JSON.parse(userGeoLocation);
+      console.log("usergeolocation", userGeoLocation);
+      console.log("usergeolocation.lat: ", userGeoLocation.lat);
 
       let getDistance3 = function(lat1, lon1, lat2, lon2) {
         var R = 6371e3; // metres
@@ -28,36 +30,38 @@ export default {
       };
 
       try {
-        const huntListByGeoLocation = await prisma
-          .users({ where: { id_not: request.user.id } })
-          .geoLocation();
-
-        // console.log(huntListByTag);
+        //like 필터링
+        const huntListByGeoLocation = await prisma.users({
+          where: {
+            AND: [
+              { id_not: request.user.id },
+              { gender_not: request.user.gender },
+              { unlikedBy_none: { id: request.user.id } },
+              { myUnlikes_none: { id: request.user.id } }
+            ]
+          }
+        });
+        console.log("huntListByLocation: ", huntListByGeoLocation);
+        ///거리 필터링
         const filteredGeoLocations = huntListByGeoLocation.filter(user => {
-          let parsed = JSON.parse(user.geoLocation);
+          let parsed = user.geoLocation;
+          parsed = JSON.parse(parsed);
+          console.log("parsed", parsed);
+          console.log("parsed.lat: ", parsed.lat);
+
           return (
-            getDistance3(
-              userGeoLocation[0],
-              userGeoLocation[1],
-              parsed[0],
-              parsed[1]
-            ) <= 5000
+            getDistance3(userGeoLocation.lat, userGeoLocation.lon, parsed.lat, parsed.lon) <= 5000
           );
         });
-        let result = await Promise.all(
-          filteredGeoLocations.map(async user => {
-            let filteredUser = await prisma.users({
-              where: { geoLocation: user.geoLocation }
-            });
-            let filtered = filteredUser.filter(user => {
-              return user.tags.some(r => selfTags.indexOf(r) >= 0);
-            });
-            return filtered;
-          })
-        );
-        return JSON.stringify(result.flat());
+        console.log("filteredGeoLocation: ", filteredGeoLocations);
+        ///tag 필터링
+        const result = filteredGeoLocations.filter(user => {
+          return user.tags.some(tag => selfTags.indexOf(tag) >= 0);
+        });
+        console.log("result: ", result);
+        return JSON.stringify(result);
       } catch (error) {
-        console.log(error);
+        throw new Error(`${error}`);
       }
     }
   }
