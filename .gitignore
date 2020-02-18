@@ -2,3 +2,4 @@ node_modules
 prisma.yml
 generated
 .env
+package-lock.json

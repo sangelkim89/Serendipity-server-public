@@ -30,7 +30,7 @@ type User {
 type Room {
   id: ID!
   participants: [User!]!
-  messages: [Message!]!
+  messages: [Message!]
   createdAt: String!
 }
 

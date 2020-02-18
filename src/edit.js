@@ -32,28 +32,13 @@ export const editUserController = async (req, res) => {
   const cardImgLocation = cardImg[0].location;
   const profileImgLocation = profileImg[0].location;
 
-  const {
-    gender,
-    email,
-    password,
-    phone,
-    name,
-    birth,
-    companyName,
-    companyRole,
-    geoLocation,
-    tags,
-    bio
-  } = req.body;
+  const { password, name, birth, companyName, companyRole, geoLocation, tags, bio } = req.body;
 
   try {
     const parseTags = JSON.parse(tags);
     await prisma.updateUser({
       data: {
-        gender,
-        email,
         password,
-        phone,
         name,
         birth,
         companyName,

@@ -1,3 +1,6 @@
-type Query {
+type Mutation {
   getRoom(id: String!): [Room]!
+}
+type Query {
+  something: String
 }

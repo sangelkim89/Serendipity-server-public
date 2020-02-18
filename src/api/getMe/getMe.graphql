@@ -1,3 +1,6 @@
+type Mutation {
+  getMe(id: String!): User!
+}
 type Query {
-  getMe: User!
+  something: String
 }

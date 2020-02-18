@@ -3,6 +3,8 @@ import multerS3 from "multer-s3";
 import aws from "aws-sdk";
 import "./env";
 import { prisma } from "../generated/prisma-client";
+import crypto from "crypto";
+import { forbiddenEmails } from "./email";
 /////////////////// multer로 img 업로드 /////////////////
 const s3 = new aws.S3({
   accessKeyId: process.env.AWS_KEY,
@@ -52,13 +54,17 @@ export const uploadController = async (req, res) => {
   const parsedgeoLocation = JSON.parse(geoLocation);
   console.log("parsedgeoLocation[0]: ", parsedgeoLocation[0]);
   try {
-    const parsedTags = JSON.parse(tags);
+    // 해시로 password변환
+    const shasum = crypto.createHash("sha1");
+    shasum.update(password);
+    const output = shasum.digest("hex");
+
     ////singUp요청////
     const parseTags = JSON.parse(tags);
     await prisma.createUser({
       name,
       phone,
-      password,
+      password: output,
       email,
       gender,
       birth,
@@ -76,6 +82,20 @@ export const uploadController = async (req, res) => {
       profileImgLocation
     });
   } catch (error) {
+    console.log(error);
     throw new Error("Can`t Create Account");
   }
 };
+
+///////tag &&  user 연결 및 생성//////
+// const parseTags = JSON.parse(tags);
+// for (let i = 0; i < parseTags.length; i++) {
+//   await prisma.createTag({
+//     user: {
+//       connect: {
+//         email: email
+//       }
+//     },
+//     tag: parseTags[i]
+//   });
+// }

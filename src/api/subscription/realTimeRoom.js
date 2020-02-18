@@ -1,4 +1,5 @@
 import { prisma } from "../../../generated/prisma-client";
+import { ROOM_FRAGMENT } from "../../fragments";
 
 export default {
   Subscription: {
@@ -19,9 +20,12 @@ export default {
               }
             ]
           })
-          .node();
+          .node()
+          .$fragment(ROOM_FRAGMENT);
       },
-      resolve: payload => payload
+      resolve: payload => {
+        return payload;
+      }
     }
   }
 };
