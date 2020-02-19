@@ -2,7 +2,7 @@ import "./env";
 const PORT = process.env.PORT || 4000;
 
 import { GraphQLServer } from "graphql-yoga";
-import schema from "../schema";
+import schema from "./schema";
 import morgan from "morgan";
 
 import { isAuthenticated } from "./middleware";
