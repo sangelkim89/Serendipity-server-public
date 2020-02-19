@@ -4,7 +4,6 @@ import aws from "aws-sdk";
 import "./env";
 import crypto from "crypto";
 import { prisma } from "../generated/prisma-client";
-import crypto from "crypto";
 
 /////////////////// multer로 img 업로드 /////////////////
 const s3 = new aws.S3({
