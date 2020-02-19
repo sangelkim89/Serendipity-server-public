@@ -55,7 +55,7 @@ export default {
         if (youLikeMe && mylikeBy) {
           // 	 const { user } = request;
           //   const { selectedId } = args;
-          //dsa
+
           const room = await prisma.createRoom({
             participants: {
               connect: [{ id: user.id }, { id: selectedId }]
