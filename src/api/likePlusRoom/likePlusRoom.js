@@ -8,17 +8,25 @@ export default {
       const { user } = request;
       const { selectedId } = args;
       try {
-        await prisma.updateUser({
-          where: { id: user.id },
-          data: {
-            myLikes: {
-              connect: {
-                id: selectedId
-              }
-            }
+        const exists = await prisma.$exists.user({
+          myLikes_some: {
+            id: selectedId
           }
         });
-
+        if (!exists) {
+          await prisma.updateUser({
+            where: { id: user.id },
+            data: {
+              myLikes: {
+                connect: {
+                  id: selectedId
+                }
+              }
+            }
+          });
+        } else if (exists) {
+          return "you already like each other!";
+        }
         const youLikeMe = await prisma.$exists.user({
           AND: [
             {
