@@ -7,7 +7,11 @@
     "dev": "nodemon --exec babel-node src/server.js",
     "build": "babel src -d build",
     "postbuild": "cd src && copy ./api/**/*.graphql ../build/",
-    "start": "node build/server.js"
+    "start": "node build/server.js",
+    "deploy": "prisma deploy",
+    "generate": "prisma generate",
+    "prisma": "npm run deploy && npm run generate",
+    "prebuild": "npm run prisma"
   },
   "repository": {
     "type": "git",
