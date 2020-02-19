@@ -3,6 +3,8 @@ import multerS3 from "multer-s3";
 import aws from "aws-sdk";
 import "./env";
 import { prisma } from "../generated/prisma-client";
+import crypto from "crypto";
+
 /////////////////// multer로 img 업로드 /////////////////
 const s3 = new aws.S3({
   accessKeyId: process.env.AWS_KEY,
@@ -24,30 +26,31 @@ const upload = multer({
 });
 ////formData로 받을때 file로 받고  img가 아닌 Data는 body로 넘어온다.//////
 ////////////////////////upload.single는 한가지 req.file|||||||fields 는 여러개req.files
-export const editUserMiddleware = upload.fields([{ name: "profileImg" }, { name: "cardImg" }]);
+export const editUserMiddleware = upload.fields([{ name: "profileImg" }]);
 
 export const editUserController = async (req, res) => {
-  const { cardImg, profileImg } = req.files;
+  const { profileImg } = req.files;
 
-  const cardImgLocation = cardImg[0].location;
   const profileImgLocation = profileImg[0].location;
 
-  const { password, name, birth, companyName, companyRole, geoLocation, tags, bio } = req.body;
+  const { password, companyName, companyRole, geoLocation, tags, bio, distance, email } = req.body;
 
   try {
     const parseTags = JSON.parse(tags);
+    const shasum = crypto.createHash("sha1");
+    shasum.update(password);
+    const output = shasum.digest("hex");
+
     await prisma.updateUser({
       data: {
-        password,
-        name,
-        birth,
+        password: output,
         companyName,
         companyRole,
         geoLocation,
         tags: { set: parseTags },
         profileImgLocation,
-        cardImgLocation,
-        bio
+        bio,
+        distance: Number(distance)
       },
       where: {
         email
@@ -55,7 +58,6 @@ export const editUserController = async (req, res) => {
     });
 
     res.status(200).json({
-      cardImgLocation,
       profileImgLocation
     });
   } catch (error) {
