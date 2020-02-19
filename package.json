@@ -7,7 +7,11 @@
     "dev": "nodemon --exec babel-node src/server.js",
     "build": "babel src -d build",
     "postbuild": "cd src && copy ./api/**/*.graphql ../build/",
-    "start": "node build/server.js"
+    "start": "node build/server.js",
+    "deploy": "prisma deploy",
+    "generate": "prisma generate",
+    "prisma": "yarn run deploy && yarn run generate",
+    "prebuild": "yarn run prisma"
   },
   "repository": {
     "type": "git",
@@ -41,6 +45,7 @@
     "nodemailer-sendgrid-transport": "^0.2.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
+    "prisma": "^1.34.10",
     "prisma-client-lib": "^1.34.10",
     "twilio": "^3.39.4"
   },
