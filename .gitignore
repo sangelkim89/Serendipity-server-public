@@ -4,3 +4,4 @@ generated
 .env
 package-lock.json
 build
+node_modules
