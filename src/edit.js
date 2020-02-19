@@ -2,6 +2,7 @@ import multer from "multer";
 import multerS3 from "multer-s3";
 import aws from "aws-sdk";
 import "./env";
+import crypto from "crypto";
 import { prisma } from "../generated/prisma-client";
 /////////////////// multer로 img 업로드 /////////////////
 const s3 = new aws.S3({
@@ -31,7 +32,8 @@ export const editUserController = async (req, res) => {
 
   const profileImgLocation = profileImg[0].location;
 
-  const { password, companyName, companyRole, geoLocation, tags, bio, distance } = req.body;
+  const { password, companyName, companyRole, geoLocation, tags, bio, distance, email } = req.body;
+
   //parsisng Tags
   const parseTags = JSON.parse(tags);
   // 해시로 password변환
