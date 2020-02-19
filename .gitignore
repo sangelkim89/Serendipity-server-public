@@ -3,3 +3,4 @@ prisma.yml
 generated
 .env
 package-lock.json
+build
