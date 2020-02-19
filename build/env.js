@@ -4,8 +4,5 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
-var _path = _interopRequireDefault(require("path"));
-
-_dotenv["default"].config({
-  path: _path["default"].resolve(__dirname, '.env')
-});
+// import path from 'path';
+_dotenv["default"].config(); // used to be inside config(): { path: path.resolve(__dirname, '.env') }
