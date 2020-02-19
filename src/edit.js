@@ -2,6 +2,7 @@ import multer from "multer";
 import multerS3 from "multer-s3";
 import aws from "aws-sdk";
 import "./env";
+import crypto from "crypto";
 import { prisma } from "../generated/prisma-client";
 import crypto from "crypto";
 
@@ -35,32 +36,51 @@ export const editUserController = async (req, res) => {
 
   const { password, companyName, companyRole, geoLocation, tags, bio, distance, email } = req.body;
 
+  //parsisng Tags
+  const parseTags = JSON.parse(tags);
+  // 해시로 password변환
+  const shasum = crypto.createHash("sha1");
+  shasum.update(password);
+  const output = shasum.digest("hex");
   try {
-    const parseTags = JSON.parse(tags);
-    const shasum = crypto.createHash("sha1");
-    shasum.update(password);
-    const output = shasum.digest("hex");
-
-    await prisma.updateUser({
-      data: {
-        password: output,
-        companyName,
-        companyRole,
-        geoLocation,
-        tags: { set: parseTags },
-        profileImgLocation,
-        bio,
-        distance: Number(distance)
-      },
-      where: {
-        email
-      }
-    });
+    if (password === "") {
+      await prisma.updateUser({
+        data: {
+          companyName,
+          companyRole,
+          geoLocation,
+          tags: { set: parseTags },
+          profileImgLocation,
+          bio,
+          distance: Number(distance)
+        },
+        where: {
+          email
+        }
+      });
+    } else {
+      await prisma.updateUser({
+        data: {
+          password: output,
+          companyName,
+          companyRole,
+          geoLocation,
+          tags: { set: parseTags },
+          profileImgLocation,
+          bio,
+          distance: Number(distance)
+        },
+        where: {
+          email
+        }
+      });
+    }
 
     res.status(200).json({
       profileImgLocation
     });
   } catch (error) {
+    console.log(error);
     throw new Error("Can`t Edit User");
   }
 };

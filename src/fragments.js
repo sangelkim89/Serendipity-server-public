@@ -9,7 +9,6 @@ export const USER_FRAGMENT = `
   geoLocation
   tags
   profileImgLocation
-  cardImgLocation
   bio
   distance
 
