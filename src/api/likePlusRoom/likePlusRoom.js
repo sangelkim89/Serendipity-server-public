@@ -4,7 +4,7 @@ export default {
   Mutation: {
     likeUser: async (_, args, { request, isAuthenticated }) => {
       isAuthenticated(request);
-
+      //please
       const { user } = request;
       const { selectedId } = args;
       try {
