@@ -41,26 +41,44 @@ export const editUserController = async (req, res) => {
   shasum.update(password);
   const output = shasum.digest("hex");
   try {
-    await prisma.updateUser({
-      data: {
-        password: output,
-        companyName,
-        companyRole,
-        geoLocation,
-        tags: { set: parseTags },
-        profileImgLocation,
-        bio,
-        distance
-      },
-      where: {
-        email
-      }
-    });
+    if (password === "") {
+      await prisma.updateUser({
+        data: {
+          companyName,
+          companyRole,
+          geoLocation,
+          tags: { set: parseTags },
+          profileImgLocation,
+          bio,
+          distance: Number(distance)
+        },
+        where: {
+          email
+        }
+      });
+    } else {
+      await prisma.updateUser({
+        data: {
+          password: output,
+          companyName,
+          companyRole,
+          geoLocation,
+          tags: { set: parseTags },
+          profileImgLocation,
+          bio,
+          distance: Number(distance)
+        },
+        where: {
+          email
+        }
+      });
+    }
 
     res.status(200).json({
       profileImgLocation
     });
   } catch (error) {
+    console.log(error);
     throw new Error("Can`t Edit User");
   }
 };

@@ -12,20 +12,36 @@ export default {
       const output = shasum.digest("hex");
       const parseTags = JSON.parse(tags);
       try {
-        await prisma.updateUser({
-          data: {
-            password: output,
-            geoLocation,
-            companyName,
-            companyRole,
-            bio,
-            distance,
-            tags: { set: parseTags }
-          },
-          where: {
-            id: request.user.id
-          }
-        });
+        if (password === "") {
+          await prisma.updateUser({
+            data: {
+              geoLocation,
+              companyName,
+              companyRole,
+              bio,
+              distance,
+              tags: { set: parseTags }
+            },
+            where: {
+              id: request.user.id
+            }
+          });
+        } else {
+          await prisma.updateUser({
+            data: {
+              password: output,
+              geoLocation,
+              companyName,
+              companyRole,
+              bio,
+              distance,
+              tags: { set: parseTags }
+            },
+            where: {
+              id: request.user.id
+            }
+          });
+        }
         return true;
       } catch (error) {
         console.log(error);
