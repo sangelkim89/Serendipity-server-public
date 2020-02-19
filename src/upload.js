@@ -4,7 +4,7 @@ import aws from "aws-sdk";
 import "./env";
 import { prisma } from "../generated/prisma-client";
 import crypto from "crypto";
-import { forbiddenEmails } from "./email";
+
 /////////////////// multer로 img 업로드 /////////////////
 const s3 = new aws.S3({
   accessKeyId: process.env.AWS_KEY,
@@ -26,12 +26,11 @@ const upload = multer({
 });
 ////formData로 받을때 file로 받고  img가 아닌 Data는 body로 넘어온다.//////
 ////////////////////////upload.single는 한가지 req.file|||||||fields 는 여러개req.files
-export const uploadMiddleware = upload.fields([{ name: "profileImg" }, { name: "cardImg" }]);
+export const uploadMiddleware = upload.fields([{ name: "profileImg" }]);
 
 export const uploadController = async (req, res) => {
-  const { cardImg, profileImg } = req.files;
-  console.log(req);
-  const cardImgLocation = cardImg[0].location;
+  const { profileImg } = req.files;
+
   const profileImgLocation = profileImg[0].location;
 
   const {
@@ -45,7 +44,8 @@ export const uploadController = async (req, res) => {
     companyName,
     companyRole,
     geoLocation,
-    tags
+    tags,
+    distance
   } = req.body;
   //name(닉네임)중복확인
   console.log("geoLocation: ", geoLocation);
@@ -72,13 +72,12 @@ export const uploadController = async (req, res) => {
       companyName,
       companyRole,
       geoLocation,
-      cardImgLocation,
       profileImgLocation,
-      tags: { set: parseTags }
+      tags: { set: parseTags },
+      distance
     });
 
     res.status(200).json({
-      cardImgLocation,
       profileImgLocation
     });
   } catch (error) {
@@ -86,16 +85,3 @@ export const uploadController = async (req, res) => {
     throw new Error("Can`t Create Account");
   }
 };
-
-///////tag &&  user 연결 및 생성//////
-// const parseTags = JSON.parse(tags);
-// for (let i = 0; i < parseTags.length; i++) {
-//   await prisma.createTag({
-//     user: {
-//       connect: {
-//         email: email
-//       }
-//     },
-//     tag: parseTags[i]
-//   });
-// }

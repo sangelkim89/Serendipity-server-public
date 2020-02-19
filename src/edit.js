@@ -2,7 +2,9 @@ import multer from "multer";
 import multerS3 from "multer-s3";
 import aws from "aws-sdk";
 import "./env";
+import crypto from "crypto";
 import { prisma } from "../generated/prisma-client";
+
 /////////////////// multer로 img 업로드 /////////////////
 const s3 = new aws.S3({
   accessKeyId: process.env.AWS_KEY,
@@ -24,41 +26,60 @@ const upload = multer({
 });
 ////formData로 받을때 file로 받고  img가 아닌 Data는 body로 넘어온다.//////
 ////////////////////////upload.single는 한가지 req.file|||||||fields 는 여러개req.files
-export const editUserMiddleware = upload.fields([{ name: "profileImg" }, { name: "cardImg" }]);
+export const editUserMiddleware = upload.fields([{ name: "profileImg" }]);
 
 export const editUserController = async (req, res) => {
-  const { cardImg, profileImg } = req.files;
+  const { profileImg } = req.files;
 
-  const cardImgLocation = cardImg[0].location;
   const profileImgLocation = profileImg[0].location;
 
-  const { password, name, birth, companyName, companyRole, geoLocation, tags, bio } = req.body;
+  const { password, companyName, companyRole, geoLocation, tags, bio, distance, email } = req.body;
 
+  //parsisng Tags
+  const parseTags = JSON.parse(tags);
+  // 해시로 password변환
+  const shasum = crypto.createHash("sha1");
+  shasum.update(password);
+  const output = shasum.digest("hex");
   try {
-    const parseTags = JSON.parse(tags);
-    await prisma.updateUser({
-      data: {
-        password,
-        name,
-        birth,
-        companyName,
-        companyRole,
-        geoLocation,
-        tags: { set: parseTags },
-        profileImgLocation,
-        cardImgLocation,
-        bio
-      },
-      where: {
-        email
-      }
-    });
+    if (password === "") {
+      await prisma.updateUser({
+        data: {
+          companyName,
+          companyRole,
+          geoLocation,
+          tags: { set: parseTags },
+          profileImgLocation,
+          bio,
+          distance: Number(distance)
+        },
+        where: {
+          email
+        }
+      });
+    } else {
+      await prisma.updateUser({
+        data: {
+          password: output,
+          companyName,
+          companyRole,
+          geoLocation,
+          tags: { set: parseTags },
+          profileImgLocation,
+          bio,
+          distance: Number(distance)
+        },
+        where: {
+          email
+        }
+      });
+    }
 
     res.status(200).json({
-      cardImgLocation,
       profileImgLocation
     });
   } catch (error) {
+    console.log(error);
     throw new Error("Can`t Edit User");
   }
 };

@@ -58,7 +58,8 @@ export default {
           return true;
         }
       } catch (error) {
-        throw new Error(`${error}`);
+        console.log(error);
+        return false;
       }
     }
   }

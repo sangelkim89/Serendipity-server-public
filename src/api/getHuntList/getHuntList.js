@@ -6,8 +6,9 @@ export default {
       console.log("request.user : ", request.user);
       isAuthenticated(request);
       const {
-        user: { tags: selfTags }
+        user: { tags: selfTags, distance }
       } = request;
+
       let userGeoLocation = request.user.geoLocation;
       userGeoLocation = JSON.parse(userGeoLocation);
       console.log("usergeolocation", userGeoLocation);
@@ -50,7 +51,8 @@ export default {
           console.log("parsed.lat: ", parsed.lat);
 
           return (
-            getDistance3(userGeoLocation.lat, userGeoLocation.lon, parsed.lat, parsed.lon) <= 5000
+            getDistance3(userGeoLocation.lat, userGeoLocation.lon, parsed.lat, parsed.lon) <=
+            Number(distance + "000")
           );
         });
         console.log("filteredGeoLocation: ", filteredGeoLocations);

@@ -11,7 +11,6 @@ companyRole: String
 geoLocation: String  
 tags: [String!] @scalarList(strategy:RELATION)
 profileImgLocation: String
-cardImgLocation: String
 bio: String
 myLikes: [User!] @relation(name: "LikesOfUser")
 likedBy: [User!] @relation(name: "LikesOfUser")
@@ -19,17 +18,17 @@ myUnlikes: [User!] @relation(name: "UnLikesOfUser")
 unlikedBy: [User!] @relation(name: "UnLikesOfUser")
 distance: Int! @default(value:5)
 rooms: [Room!]
-reports:[Report!]
+
+myReport:[ReportMessage!] @relation(name: "ReportFrom")
+ReportBy:[ReportMessage!] @relation(name: "ReportTo")
 }
-
-
  
 
 
 type Room {
 id: ID! @id
 participants: [User!]!
-messages: [Message!]
+messages: [Message!]  @relation(name: "RoomMessages", onDelete: CASCADE)
 createdAt: DateTime! @createdAt
 }
 
@@ -38,24 +37,17 @@ type Message {
   text: String!
   from: User! @relation(name: "From")
   to: User! @relation(name: "To")
-  room: Room!
+  room: Room! @relation(name: "RoomMessages", onDelete: SET_NULL)
   createdAt: DateTime! @createdAt
 }
 
 
-type Report {
-id: ID! @id
-participants: [User!]!
-messages: [ReportMessage!]!
-createdAt: DateTime! @createdAt
-}
-
 type ReportMessage {
 id: ID! @id
 text: String!
+optionText: String!
 from: User! @relation(name: "ReportFrom")
 to: User! @relation(name: "ReportTo")
-report: Report!
 createdAt: DateTime! @createdAt
 }
 
