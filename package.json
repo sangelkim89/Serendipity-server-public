@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon --exec babel-node src/server.js",
     "build": "babel src -d build",
-    "postbuild": "cd src && copy .api/**/*.graphql ../build/"
+    "postbuild": "cd src && copy ./api/**/*.graphql ../build/",
+    "start": "node build/server.js"
   },
   "repository": {
     "type": "git",
