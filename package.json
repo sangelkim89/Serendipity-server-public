@@ -34,6 +34,7 @@
     "copy": "^0.3.2",
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
+    "graphql": "^14.6.0",
     "graphql-tools": "^4.0.6",
     "graphql-yoga": "^1.18.3",
     "jsonwebtoken": "^8.5.1",
