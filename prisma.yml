@@ -1,4 +1,4 @@
-endpoint: ${env:ENDD}
+endpoint: ${env:E}
 datamodel: datamodel.prisma
 
 generate:
