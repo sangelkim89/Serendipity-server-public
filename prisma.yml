@@ -1,4 +1,4 @@
-endpoint: "https://kwanprisma-cbbcfd9373.herokuapp.com/kwanprisma/prod"
+endpoint: "https://eu1.prisma.sh/tlrhks2869-ee4f12/Serendipity-server/dev"
 datamodel: datamodel.prisma
 
 generate:
