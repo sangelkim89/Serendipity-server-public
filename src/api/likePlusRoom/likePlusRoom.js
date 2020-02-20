@@ -8,6 +8,18 @@ export default {
       const { selectedId } = args;
       try {
         const exists = await prisma.$exists.user({
+          AND: [
+            {
+              id: user.id
+            },
+            {
+              myLikes_some: {
+                id: selectedId
+              }
+            }
+          ]
+        });
+        const exists = await prisma.$exists.user({
           myLikes_some: {
             id: selectedId
           },
