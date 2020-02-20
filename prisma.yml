@@ -1,4 +1,4 @@
-endpoint: ${env:N}
+endpoint: "https://kwanprisma-cbbcfd9373.herokuapp.com/kwanprisma/prod"
 datamodel: datamodel.prisma
 
 generate:
