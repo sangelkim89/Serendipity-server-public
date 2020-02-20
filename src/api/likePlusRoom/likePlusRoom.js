@@ -1,5 +1,4 @@
 import { prisma } from "../../../generated/prisma-client";
-
 export default {
   Mutation: {
     likeUser: async (_, args, { request, isAuthenticated }) => {
@@ -11,6 +10,9 @@ export default {
         const exists = await prisma.$exists.user({
           myLikes_some: {
             id: selectedId
+          },
+          where: {
+            id: user.id
           }
         });
         if (!exists) {
@@ -53,15 +55,13 @@ export default {
         });
         // 서로 liked 가 존재하여 createRoom 생성하기
         if (youLikeMe && mylikeBy) {
-          // 	 const { user } = request;
+          //   const { user } = request;
           //   const { selectedId } = args;
-
           const room = await prisma.createRoom({
             participants: {
               connect: [{ id: user.id }, { id: selectedId }]
             }
           });
-
           return `${room.id}`;
         } else {
           return "The request has been successfully processed.";
