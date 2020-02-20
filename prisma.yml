@@ -1,4 +1,4 @@
-endpoint: "https://us1.prisma.sh/pre_35_-f9124a/serendipity/dev"
+endpoint: "https://serendipitybackend-e8a02a7c37.herokuapp.com/serendipity/prod"
 datamodel: datamodel.prisma
 
 generate:
