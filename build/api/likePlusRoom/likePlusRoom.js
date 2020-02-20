@@ -25,7 +25,8 @@ var _default = {
             switch (_context.prev = _context.next) {
               case 0:
                 request = _ref.request, isAuthenticated = _ref.isAuthenticated;
-                isAuthenticated(request);
+                isAuthenticated(request); //please
+
                 user = request.user;
                 selectedId = args.selectedId;
                 _context.prev = 4;
