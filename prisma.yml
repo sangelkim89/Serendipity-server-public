@@ -1,4 +1,4 @@
-endpoint: ${env:PRISMA_ENDPOINT}
+endpoint: "https://serendipity-server.herokuapp.com/serendipity/prod"
 datamodel: datamodel.prisma
 
 generate:
