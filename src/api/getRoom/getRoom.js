@@ -2,7 +2,7 @@ import { prisma } from "../../../generated/prisma-client";
 import { ROOM_FRAGMENT } from "../../fragments";
 export default {
   Query: {
-    getRoom: async (_, __, { request, isAuthenticated }) => {
+    getRoom: async (_, args, { request, isAuthenticated }) => {
       isAuthenticated(request);
       const {
         user: { id }
