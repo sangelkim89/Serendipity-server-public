@@ -1,5 +1,4 @@
-endpoint: "https://pleasework-c51c2b0fa7.herokuapp.com/pleasework/prod"
-
+endpoint: ${env:A}
 datamodel: datamodel.prisma
 
 generate:
