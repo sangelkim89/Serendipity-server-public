@@ -10,7 +10,7 @@
     "start": "node build/server.js",
     "deploy": "prisma deploy",
     "generate": "prisma generate",
-    "prisma": "npm run deploy && npm run generate",
+    "prisma": "npm run generate",
     "prebuild": "npm run prisma"
   },
   "repository": {
