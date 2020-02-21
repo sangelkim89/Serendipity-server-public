@@ -19,14 +19,7 @@ export default {
             }
           ]
         });
-        const exists = await prisma.$exists.user({
-          myLikes_some: {
-            id: selectedId
-          },
-          where: {
-            id: user.id
-          }
-        });
+
         if (!exists) {
           await prisma.updateUser({
             where: { id: user.id },
