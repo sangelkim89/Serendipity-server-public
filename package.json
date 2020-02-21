@@ -10,7 +10,7 @@
     "start": "node build/server.js",
     "deploy": "prisma deploy",
     "generate": "prisma generate",
-    "prisma": "yarn run generate",
+    "prisma": "yarn run deploy && yarn run generate",
     "prebuild": "yarn run prisma"
   },
   "repository": {
