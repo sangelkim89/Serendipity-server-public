@@ -8,9 +8,16 @@ export default {
       const { selectedId } = args;
       try {
         const exists = await prisma.$exists.user({
-          myLikes_some: {
-            id: selectedId
-          }
+          AND: [
+            {
+              id: user.id
+            },
+            {
+              myLikes_some: {
+                id: selectedId
+              }
+            }
+          ]
         });
         if (!exists) {
           await prisma.updateUser({
@@ -52,7 +59,7 @@ export default {
         });
         // 서로 liked 가 존재하여 createRoom 생성하기
         if (youLikeMe && mylikeBy) {
-          // 	 const { user } = request;
+          //   const { user } = request;
           //   const { selectedId } = args;
           const room = await prisma.createRoom({
             participants: {
