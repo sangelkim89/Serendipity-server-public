@@ -10,7 +10,6 @@ export default {
           .room({
             AND: [
               { mutation_in: "CREATED" },
-              { mutation_in: "UPDATED" },
               {
                 node: {
                   participants_some: {
