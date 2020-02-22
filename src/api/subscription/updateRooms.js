@@ -12,9 +12,7 @@ export default {
               { mutation_in: "UPDATED" },
               {
                 node: {
-                  participants_some: {
-                    id
-                  }
+                  id
                 }
               }
             ]
