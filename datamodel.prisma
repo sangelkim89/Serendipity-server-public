@@ -13,18 +13,19 @@ tags: [String!] @scalarList(strategy:RELATION)
 profileImgLocation: String
 bio: String
 
-myLikes: [User!] @relation(name: "LikesOfUser")
-likedBy: [User!] @relation(name: "LikesOfUser")
+myLikes: [User!] @relation(name: "LikesOfUser" ,onDelete: CASCADE)
+likedBy: [User!] @relation(name: "LikesOfUser" ,onDelete: CASCADE)
 
-myUnlikes: [User!] @relation(name: "UnLikesOfUser")
-unlikedBy: [User!] @relation(name: "UnLikesOfUser")
+myUnlikes: [User!] @relation(name: "UnLikesOfUser",onDelete: CASCADE)
+unlikedBy: [User!] @relation(name: "UnLikesOfUser" ,onDelete: CASCADE)
 
 distance: Int! @default(value:5)
 
-rooms: [Room!]
+rooms: [Room!] @relation(name: "arrayRoom" ,onDelete: CASCADE)
 
-myReport:[ReportMessage!] @relation(name: "ReportFrom")
-ReportBy:[ReportMessage!] @relation(name: "ReportTo")
+
+myReport:[ReportMessage!] @relation(name: "ReportFrom",onDelete: CASCADE)
+ReportBy:[ReportMessage!] @relation(name: "ReportTo",onDelete: CASCADE)
 }
  
 
