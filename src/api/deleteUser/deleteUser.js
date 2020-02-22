@@ -5,14 +5,13 @@ export default {
       //자기자신이 회원탈퇴
       isAuthenticated(request);
       const { id } = request.user;
-    }
-  }
-};
-/*
- try {
+
+      try {
         await prisma.deleteUser({ id });
         return true;
       } catch (error) {
         return false;
       }
-      */
+    }
+  }
+};
