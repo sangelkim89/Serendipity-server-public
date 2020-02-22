@@ -4,9 +4,10 @@ export default {
   Query: {
     getRoom: async (_, args, { request, isAuthenticated }) => {
       isAuthenticated(request);
-      const {
-        user: { id }
-      } = request;
+      // const {
+      //   user: { id }
+      // } = request;
+      const { id } = args;
       try {
         const room = await prisma
           .rooms({
