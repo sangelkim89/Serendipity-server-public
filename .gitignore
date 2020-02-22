@@ -1,6 +1,7 @@
 node_modules
-prisma.yml
+
 generated
 .env
 package-lock.json
 build
+node_modules
