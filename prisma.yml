@@ -1,4 +1,4 @@
-endpoint: "https://kwankwankwan-1738fcf4aa.herokuapp.com/serengeti/prod"
+endpoint: ${env:END_POINT}
 datamodel: datamodel.prisma
 
 generate:

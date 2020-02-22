@@ -13,15 +13,15 @@ tags: [String!] @scalarList(strategy:RELATION)
 profileImgLocation: String
 bio: String
 
-myLikes: [User!] @relation(name: "LikesOfUser" ,onDelete: CASCADE)
-likedBy: [User!] @relation(name: "LikesOfUser" ,onDelete: CASCADE)
+myLikes: [User!] @relation(name: "LikesOfUser" ,onDelete: SET_NULL)
+likedBy: [User!] @relation(name: "LikesOfUser" ,onDelete: SET_NULL)
 
-myUnlikes: [User!] @relation(name: "UnLikesOfUser",onDelete: CASCADE)
-unlikedBy: [User!] @relation(name: "UnLikesOfUser" ,onDelete: CASCADE)
+myUnlikes: [User!] @relation(name: "UnLikesOfUser",onDelete: SET_NULL)
+unlikedBy: [User!] @relation(name: "UnLikesOfUser" ,onDelete: SET_NULL)
 
 distance: Int! @default(value:5)
 
-rooms: [Room!] @relation(name: "arrayRoom" ,onDelete: CASCADE)
+rooms: [Room!] @relation(name: "ArrayRoom" ,onDelete: CASCADE)
 
 
 myReport:[ReportMessage!] @relation(name: "ReportFrom",onDelete: CASCADE)
@@ -32,7 +32,7 @@ ReportBy:[ReportMessage!] @relation(name: "ReportTo",onDelete: CASCADE)
 
 type Room {
 id: ID! @id
-participants: [User!]!
+participants: [User!]!  @relation(name: "ArrayRoom" ,onDelete: SET_NULL)
 messages: [Message!]  @relation(name: "RoomMessages", onDelete: CASCADE)
 createdAt: DateTime! @createdAt
 }
