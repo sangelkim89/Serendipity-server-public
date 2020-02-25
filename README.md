@@ -1,50 +1,88 @@
 ## 1. Intro
 
-- **팀 명 :** Serengeti
-- **프로젝트 명 :** Serendipity (Eat, Pray, Love)
+- **Team Name:** Serengeti
+- **Project Name :** Serendipity (Eat, Pray, Love)
+- **Introduction :** When you clock out of your company and you're on your way home, a fellow co-worker/neighbor employee catches your eye. You think to yourself, "I wouldn't mind dating that person..."
+Serendipity (Eat, Pray, Love) is a dating app for fellow employees designed to match you with employees within your vicinity who share similar interest!
 
 ## 2. Project
 
 ---
 
-회사 출퇴근 하면서 '저 사람 되게 괜찮아 보인다. 한 번 만나보고 싶다'는 생각을 가지고 있었는데
+- **Before Starting:** 
+This is the server-side file for our project, make sure to check out the client-side: https://github.com/codestates/Serendipity-client/tree/master
 
-직장인들을 위한 만남 주선 어플을 만들어보면 어떨까 하는 생각으로 만든 프로젝트입니다.
+---
 
+ ***Setup :***
 
-
-- Stack :  Server: GraphQL, 
-             ORM: Prisma, 
-             Auth: Passport-jwt+Crypto, 
-             DB: PostgreSQL, 
-             Server+DB Deploy: Heroku, 
-             APK: Expo, 
-             Image Storage: multer + s3,
-             Text: twilio,
-             Email: nodemailer
-- Works : getUser, getMe, signUp, logOut, confirmText, checkForBannedEmail, submitReport, getHuntList, nicknameCheck, deleteAccount, deploy
-    1. getUser: client sends a user's id with which the server searches the database and returns its user data
-    2. getMe: client sends the logged-in user's id with which the server searches the database and returns its user data
-    3. signUp: the client sends sign-up data with which the server creates an account into the database. Using multer, the user's profile image is stored in AWS S3
-    4. logOut: client sends the logged-in user's id with which the server returns a jwt token with 0 second lifespan.
-    5. confirmText: client sends a phone number with which the server uses Twilio to send a confirmation text message containing the verification code.
-    6. checkForBannedEmail: client sends an email with which the server checks if the email is considered "public." Banned emails are listed in a separate file and exported to the resolver function.
-    7. submitReport: client sends the target id with which the server creates a report about the reportee in the database. To prevent the re-match of these two users, the server also places the reportee in a "disliked" category of the reporter. Once included in this category, a future match is impossible.
-    8. getHuntList: client sends the logged-in user's data with which the server finds a list of matches from the database. The list is filtered by: 
-    1) The geo-location distance between the two users (both need to be within 5km of each other). This is done by calculations with their lat/long coordinates.
-    2) At least one of their selected "interest" tags must match.
-    3) Must be opposite biological genders.
-    4) Must not be already disliked by the other person.
-    9. nicknameCheck: client sends the user's selected nickname with which the server checks the database to see if is already chosen. Returns a boolean value.
-    10. deleteAccount: client sends the logged-in user's id with which the server deletes the user from the database.
-    11. deploy: Deployed server+PostgreSQL using Heroku and created the client's APK using Expo.
-
-
-## 3. set up : $npm install
-               $prisma deploy
-               $prisma generate
+- **Installing :**  Please install with:
+```js
+npm(yarn) install
+``` 
 
 
 
+- **Running the program :**
+To run this server in your local setting, you will have to first create a Prisma account at: https://www.prismaio.com/
 
+In the terminal, try to run:
+```js
+prisma init
+```
+You will most likely get an error message saying there might be a conflict with some files. The simplest way is to copy those files' contents, erase the file, and run 'prisma init' again. The files will re-emerge but empty. Paste the contents back into them.
+Once done, please run:
+```js
+prisma deploy
+prisma generate
+```
+This will create a service within your server and you can check out the database under the service tab.
+You will also have to create a .env file in the project directory and add these variables with your own secrets:
+```js
+PORT = 4000
+SENDGRID_USERNAME = ""
+SENDGRID_PASSWORD = ""
+JWT_SECRET = ""
+AWS_KEY = ""
+AWS_SECRET = ""
+TWILIO_ACCOUNT_SID = ""
+TWILIO_AUTH_TOKEN = ""
+TWILIO_FROM_NUMBER = ""
+ADMIN_EMAIL = ""
+
+PRISMA_ENDPOINT = "" (Please enter the 'http endpoint' you can find in your Service tab of your prisma account.)
+```
+**Enter your email for ADMIN_EMAIL and enter the 'http endpoint' you can find in your Service tab of your prisma account.**
+
+
+You can start the server with:
+```js
+npm(yarn) run dev
+```
+
+If testing on localhost (ex:4000), navigate to localhost:4000 to check out the playground page where you can test the resolver functions.
+
+
+
+ ***Features :***
+ Resolvers:
+-adminDeleteAccount: Delete an account as an admin
+-allUsers: Get data on all users
+-checkUniqueID: Checks if the provided "name" field already exists
+-confirmEmail: Checks if the provided email is a banned public email and checks if the email already exists, if the email passes both tests, send an email containing a secret phrase for verification and also return the secret phrase to the client for comparison.
+-confirmText: Send a text message with a secret code to the provided phone number and also return the secret code to the client for comparison.
+-createReport: Create a report with the provided data, unlikes the target user so he/she does not appear in the Match list again.
+-deleteUser: Delete the requester's account.
+-editUser: This is for when the user does not update their picture. Updates the user's information with the provided information.
+-getHuntList: Returns a list of users that pass the filters of '5km geolocation vicinity', 'similar tag selection' and 'opposite biological gender'.
+-getMe: Returns the requester's user data.
+-getMessage: Retrieves from database all the messages in a chatroom.
+-getRoom: Returns all the chatrooms(and the subsequent data within) that the user is participating in.
+-getUser: Returns a requested user's data.
+-likePlusRoom: Adds a target user to the requester's "like" list and creates a chatroom if they like each other.
+-logOut: Sends a JWT token with 0 second life-time.
+-roomDelete: Deletes a chatroom from the database.
+-sendMessage: Creates a new message
+-subscriptions: These are used to open a subscription channel
+-unlike: Unlikes the target user and prevents him/her from appearing again on the Match list.
 
