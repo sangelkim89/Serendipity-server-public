@@ -1,0 +1,53 @@
+type User {
+  id: ID!
+  gender: String!
+  email: String!
+  password: String!
+  phone: String!
+  name: String!
+  birth: String!
+  companyName: String
+  companyRole: String
+  geoLocation: String
+  tags: [String!]
+  profileImgLocation: String
+  bio: String
+
+  myLikes: [User!]
+  likedBy: [User!]
+
+  myUnlikes: [User!]
+  unlikedBy: [User!]
+
+  distance: Int!
+
+  rooms: [Room!]
+
+  myReport: [ReportMessage!]
+  ReportBy: [ReportMessage!]
+}
+
+type Room {
+  id: ID!
+  participants: [User!]!
+  messages: [Message!]
+  createdAt: String
+}
+
+type Message {
+  id: ID!
+  text: String!
+  from: User!
+  to: User!
+  room: Room!
+  createdAt: String
+}
+
+type ReportMessage {
+  id: ID!
+  text: String!
+  optionText: String!
+  from: User!
+  to: User!
+  createdAt: String
+}

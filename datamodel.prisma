@@ -1,0 +1,62 @@
+type User {
+id: ID! @id
+gender: String!
+email: String! @unique 
+password: String! 
+phone: String! @unique
+name: String! @unique
+birth: String! 
+companyName: String 
+companyRole: String
+geoLocation: String  
+tags: [String!] @scalarList(strategy:RELATION)
+profileImgLocation: String
+bio: String
+
+myLikes: [User!] @relation(name: "LikesOfUser" ,onDelete: SET_NULL)
+likedBy: [User!] @relation(name: "LikesOfUser" ,onDelete: SET_NULL)
+
+myUnlikes: [User!] @relation(name: "UnLikesOfUser",onDelete: SET_NULL)
+unlikedBy: [User!] @relation(name: "UnLikesOfUser" ,onDelete: SET_NULL)
+
+distance: Int! @default(value:5)
+
+rooms: [Room!] @relation(name: "ArrayRoom" ,onDelete: CASCADE)
+
+
+myReport:[ReportMessage!] @relation(name: "ReportFrom",onDelete: CASCADE)
+ReportBy:[ReportMessage!] @relation(name: "ReportTo",onDelete: CASCADE)
+}
+ 
+
+
+type Room {
+id: ID! @id
+participants: [User!]!  @relation(name: "ArrayRoom" ,onDelete: SET_NULL)
+messages: [Message!]  @relation(name: "RoomMessages", onDelete: CASCADE)
+createdAt: DateTime! @createdAt
+}
+
+type Message {
+  id: ID! @id
+  text: String!
+  from: User! @relation(name: "From")
+  to: User! @relation(name: "To")
+  room: Room! @relation(name: "RoomMessages", onDelete: SET_NULL)
+  createdAt: DateTime! @createdAt
+}
+
+
+type ReportMessage {
+id: ID! @id
+text: String!
+optionText: String!
+from: User! @relation(name: "ReportFrom")
+to: User! @relation(name: "ReportTo")
+createdAt: DateTime! @createdAt
+}
+
+
+
+
+
