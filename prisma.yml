@@ -1,4 +1,4 @@
-endpoint: ${env:PRISMA_ENDPOINT}
+endpoint: https://us1.prisma.sh/pre_35_-f9124a/serendipity/dev
 datamodel: datamodel.prisma
 
 generate:

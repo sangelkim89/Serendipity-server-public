@@ -8,6 +8,7 @@
     "build": "babel src -d build",
     "postbuild": "cd src && copy ./api/**/*.graphql ../build/",
     "start": "node build/server.js",
+    "deploy": "prisma deploy",
     "generate": "prisma generate",
     "prisma": "yarn run generate",
     "prebuild": "yarn run prisma"
