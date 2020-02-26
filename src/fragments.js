@@ -41,6 +41,19 @@ messages{
 }
 }
 `;
+export const NESTEDROOM_FRAGMENT = `
+
+id
+createdAt
+participants{
+   
+    ${USER_FRAGMENT}
+}
+messages{
+    ${MESSAGE_FRAGMENT}
+}
+
+`;
 
 export const MESSAGES_FRAGMENT = `
 fragment MessageParts on Message{
@@ -54,7 +67,7 @@ from{
     ${USER_FRAGMENT}
 }
 room{
-    id
+    ${NESTEDROOM_FRAGMENT}
 }
 createdAt
 }

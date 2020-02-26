@@ -6,6 +6,10 @@ export default {
       isAuthenticated(request);
       const { user } = request;
       const { roomId, message, toId } = args;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8101860e57cf5ac5fb17b2bf59c8123a4dde626f
       try {
         const createMessage = await prisma.createMessage({
           text: message,

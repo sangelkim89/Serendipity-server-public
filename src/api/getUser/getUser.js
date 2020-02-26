@@ -4,9 +4,10 @@ export default {
   Query: {
     getUser: async (_, args, { request, isAuthenticated }) => {
       isAuthenticated(request);
-      const { id } = args;
-      // const { user } = request;
-      const userProfile = await prisma.user({ id });
+
+      const { user } = request;
+      const userProfile = await prisma.user({ id: user.id });
+
       return userProfile;
     }
   }

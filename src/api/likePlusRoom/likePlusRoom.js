@@ -19,7 +19,6 @@ export default {
             }
           ]
         });
-
         if (!exists) {
           await prisma.updateUser({
             where: { id: user.id },
